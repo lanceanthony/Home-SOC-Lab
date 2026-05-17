@@ -190,11 +190,11 @@ This project was built alongside:
 - **CompTIA Security+** (active)
 - **TryHackMe SOC Level 1** (completed)
 - **Splunk Core Certified Power User** (in progress)
-- **Queens College CUNY** — B.S. Computer Science (Dec 2026)
+- **Queens College CUNY** — B.A. Computer Science (Dec 2026)
 - **U.S. Army National Guard** — CBRN Specialist NCO (active)
 ---
  
 ## 📬 Contact
  
 **Lance Vidaure**  
-[github.com/lanceanthony](https://github.com/lanceanthony) | [LinkedIn](https://linkedin.com/in/lancevidaure)
+[github.com/lanceanthony](https://github.com/lanceanthony) | [LinkedIn](https://linkedin.com/in/lance-vidaure)
