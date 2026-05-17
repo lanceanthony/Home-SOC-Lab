@@ -36,39 +36,6 @@ SOC-Lab-Network (192.168.10.0/24) — VirtualBox Internal Network
  
 ---
  
-## 📁 Repository Structure
- 
-```
-Home-SOC-Lab/
-├── README.md
-├── phase1-network/
-│   ├── README.md
-│   └── screenshots/
-├── phase2-windows/
-│   ├── README.md
-│   └── screenshots/
-├── phase3-wazuh/
-│   ├── README.md
-│   ├── local_rules.xml
-│   └── screenshots/
-├── phase4-attack/
-│   ├── README.md
-│   ├── IR-2026-001_Incident_Report.pdf
-│   ├── mitre-attack-mapping.md
-│   └── screenshots/
-├── phase5-aws/
-│   ├── README.md
-│   └── screenshots/
-├── phase6-grc/
-│   ├── README.md
-│   ├── SOCLab_Security_Policy.pdf
-│   └── SOCLab_Risk_Assessment.pdf
-└── docs/
-    └── SOCLab_Build_Guide.pdf
-```
- 
----
- 
 ## 🔬 Phase Breakdown
  
 ### Phase 1 — Network Foundation
