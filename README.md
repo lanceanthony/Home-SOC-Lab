@@ -197,4 +197,4 @@ This project was built alongside:
 ## 📬 Contact
  
 **Lance Vidaure**  
-[github.com/lanceanthony](https://github.com/lanceanthony) | [LinkedIn](https://linkedin.com/in/lance-vidaure)
+[Github](https://github.com/lanceanthony) | [LinkedIn](https://linkedin.com/in/lance-vidaure)
