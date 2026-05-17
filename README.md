@@ -151,8 +151,7 @@ Integrated AWS cloud security monitoring into the SOC lab using CloudTrail for A
  
 Produced governance, risk, and compliance documentation for the lab environment including a security policy and risk assessment — simulating real-world GRC analyst deliverables.
  
-📄 **[Security Policy PDF](phase6-grc/SOCLab_Security_Policy.pdf)**  
-📄 **[Risk Assessment PDF](phase6-grc/SOCLab_Risk_Assessment.pdf)**
+📄 **[Security Policy PDF](phase6-grc/SOCLab_GRC_Documentation.pdf)**  
  
 ---
  
