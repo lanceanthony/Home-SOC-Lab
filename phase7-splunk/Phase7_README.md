@@ -8,7 +8,7 @@ Integrated Splunk Enterprise into the existing SOC lab alongside Wazuh, creating
 
 ## Architecture
 
-![Phase 7 Architecture](screenshots/Phase7_Architecture_Diagram.svg)
+![Phase 7 Architecture](Phase7_Architecture_Diagram.svg)
 
 | Component | Role | IP Address |
 |-----------|------|------------|
