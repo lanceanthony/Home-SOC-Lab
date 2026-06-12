@@ -182,25 +182,6 @@ Integrated Splunk Enterprise into the existing SOC lab alongside Wazuh, creating
 - Validated 1,090+ events across 4 sourcetypes within minutes of setup
 - Confirmed end-to-end failed logon detection (EventCode 4625)
 
-### Phase 8 — Detection Engineering
-**Duration:** Week 10 | **Status:** ✅ Complete
-
-Built 5 production-quality MITRE ATT&CK mapped detection alerts in Splunk against real lab-generated event data. Each alert includes a detection runbook written in SOC SOP format covering trigger logic, investigation steps, pivot searches, true/false positive indicators, and response actions.
-
-**Alerts Built:**
-
-| Alert | MITRE Technique | Severity | Type |
-|-------|----------------|----------|------|
-| Brute Force Login Detection | T1110 | High | Scheduled |
-| New Local Admin Account | T1136.001 | Critical | Scheduled |
-| Suspicious Process Creation | T1059 | Medium | Scheduled |
-| Lateral Movement (PsExec/SMB) | T1021 | Critical | Real-Time |
-| Reconnaissance Port Scan | T1046 | High | Scheduled |
-
-**Detection Runbooks:** [phase8-detection/runbooks/](phase8-detection/runbooks/)
-
-**Tools:** Splunk Enterprise 9.3.2, Sysmon v15.20, Windows Server 2022, PowerShell
-
 **Data Sources:**
 
 | Sourcetype | Index | Event Volume |
@@ -237,6 +218,27 @@ index=windows_logs EventCode=4625 | table _time, Account_Name, Logon_Type, Sourc
 ```
 
 **Tools:** Splunk Enterprise 9.3.2, Splunk Universal Forwarder 10.4.0, Sysmon v15.20 (SwiftOnSecurity config), Ubuntu 22.04, Windows Server 2022
+
+---
+
+### Phase 8 — Detection Engineering
+**Duration:** Week 10 | **Status:** ✅ Complete
+
+Built 5 production-quality MITRE ATT&CK mapped detection alerts in Splunk against real lab-generated event data. Each alert includes a detection runbook written in SOC SOP format covering trigger logic, investigation steps, pivot searches, true/false positive indicators, and response actions.
+
+**Alerts Built:**
+
+| Alert | MITRE Technique | Severity | Type |
+|-------|----------------|----------|------|
+| Brute Force Login Detection | T1110 | High | Scheduled |
+| New Local Admin Account | T1136.001 | Critical | Scheduled |
+| Suspicious Process Creation | T1059 | Medium | Scheduled |
+| Lateral Movement (PsExec/SMB) | T1021 | Critical | Real-Time |
+| Reconnaissance Port Scan | T1046 | High | Scheduled |
+
+**Detection Runbooks:** [phase8-detection/runbooks/](phase8-detection/runbooks/)
+
+**Tools:** Splunk Enterprise 9.3.2, Sysmon v15.20, Windows Server 2022, PowerShell
 
 ---
 
