@@ -1,0 +1,178 @@
+<form version="1.1" theme="dark" refresh="60">
+  <label>SOC Overview - Home SOC Lab Phase 9</label>
+  <description>Lance Vidaure - Detection Engineering Capstone Dashboard</description>
+
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" token="global_time" searchWhenChanged="true">
+      <label>Time Range</label>
+      <default>
+        <earliest>0</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="dropdown" token="computer_tok" searchWhenChanged="true">
+  <label>Computer</label>
+  <choice value="*">All Computers</choice>
+  <fieldForLabel>ComputerName</fieldForLabel>
+  <fieldForValue>ComputerName</fieldForValue>
+  <search>
+    <query>index=windows_logs | stats count by ComputerName</query>
+    <earliest>0</earliest>
+    <latest>now</latest>
+  </search>
+  <default>*</default>
+  <initialValue>*</initialValue>
+</input>
+    <input type="text" token="eventcode_tok" searchWhenChanged="true">
+      <label>EventCode Filter</label>
+      <default>*</default>
+    </input>
+  </fieldset>
+
+  <row>
+    <panel>
+      <title>Total Events (Selected Range)</title>
+      <single>
+        <search>
+          <query>index=windows_logs ComputerName=$computer_tok$ | stats count</query>
+          <earliest>$global_time.earliest$</earliest>
+          <latest>$global_time.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="colorMode">block</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Event Timeline by Sourcetype</title>
+      <chart>
+        <search>
+          <query>index=windows_logs ComputerName=$computer_tok$
+| timechart span=1h count by sourcetype</query>
+          <earliest>$global_time.earliest$</earliest>
+          <latest>$global_time.latest$</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+      </chart>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>Brute Force Login Attempts - T1110</title>
+      <table>
+        <search>
+          <query>index=windows_logs sourcetype="WinEventLog:Security" EventCode=4625 ComputerName=$computer_tok$
+| bucket _time span=5m
+| stats count by _time, Account_Name, Source_Network_Address
+| sort -count</query>
+          <earliest>$global_time.earliest$</earliest>
+          <latest>$global_time.latest$</latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+        <drilldown>
+          <set token="computer_tok">*</set>
+          <set token="eventcode_tok">4625</set>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <title>New Admin Account Activity - T1136.001</title>
+      <table>
+        <search>
+          <query>index=windows_logs sourcetype="WinEventLog:Security" (EventCode=4720 OR EventCode=4732) ComputerName=$computer_tok$
+| eval event_type=case(EventCode=4720, "Account Created", EventCode=4732, "Added to Privileged Group", true(), "Other")
+| table _time, EventCode, event_type, Account_Name, Sam_Account_Name
+| sort -_time</query>
+          <earliest>$global_time.earliest$</earliest>
+          <latest>$global_time.latest$</latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+        <drilldown>
+          <set token="eventcode_tok">$click.value$</set>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>Suspicious Process Creation - T1059</title>
+      <table>
+        <search>
+          <query>index=windows_logs sourcetype="WinEventLog:Sysmon" EventCode=1 ComputerName=$computer_tok$
+| rex field=CommandLine "(?i)(?P&lt;suspicious_cmd&gt;whoami|net user|net group|systeminfo|ipconfig)"
+| where isnotnull(suspicious_cmd)
+| table _time, ComputerName, ParentImage, Image, CommandLine, suspicious_cmd
+| sort -_time</query>
+          <earliest>$global_time.earliest$</earliest>
+          <latest>$global_time.latest$</latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+        <drilldown>
+          <link target="_blank">
+            <eval>"/app/search/search?q=" . "search index%3Dwindows_logs%20sourcetype%3D%22WinEventLog%3ASysmon%22%20CommandLine%3D%22" . urlencode($click.value2$) . "%22"</eval>
+          </link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <title>Lateral Movement (PsExec/SMB) - T1021</title>
+      <table>
+        <search>
+          <query>index=windows_logs sourcetype="WinEventLog:Sysmon" (EventCode=1 OR EventCode=3) ComputerName=$computer_tok$
+| where match(Image, "(?i)psexec") OR match(CommandLine, "(?i)psexec") OR (EventCode=3 AND DestinationPort=445)
+| table _time, EventCode, ComputerName, Image, CommandLine, DestinationIp, DestinationPort
+| sort -_time</query>
+          <earliest>$global_time.earliest$</earliest>
+          <latest>$global_time.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>Reconnaissance Port Scan Detections - T1046</title>
+      <table>
+        <search>
+          <query>index=windows_logs sourcetype="WinEventLog:Sysmon" EventCode=3 ComputerName=$computer_tok$
+| bucket _time span=1m
+| stats dc(DestinationPort) as unique_ports, values(DestinationPort) as ports, values(DestinationIp) as targets by _time, SourceIp, ComputerName
+| where unique_ports >= 1
+| sort -unique_ports</query>
+          <earliest>$global_time.earliest$</earliest>
+          <latest>$global_time.latest$</latest>
+        </search>
+        <option name="drilldown">row</option>
+        <option name="count">10</option>
+        <drilldown>
+          <set token="computer_tok">$row.ComputerName$</set>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <title>Active Token Filters</title>
+      <html>
+        <div style="padding:15px; font-size:13px; color:#c9d1d9;">
+          <p><b>Computer Filter:</b> $computer_tok$</p>
+          <p><b>EventCode Filter:</b> $eventcode_tok$</p>
+          <p style="color:#8b949e; margin-top:10px;">
+            Click any table row or cell above to drill down. Use the
+            Computer dropdown to filter the entire dashboard. Reset
+            filters using the Computer dropdown All Computers option.
+          </p>
+        </div>
+      </html>
+    </panel>
+  </row>
+
+</form>
