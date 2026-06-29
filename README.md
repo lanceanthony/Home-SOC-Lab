@@ -22,6 +22,7 @@ This project simulates a real-world enterprise security environment inside Virtu
 - ✅ Sysmon deployed with SwiftOnSecurity config — 1,090+ events ingested across 4 sourcetypes
 - ✅ 5 MITRE ATT&CK mapped Splunk detection alerts built and validated
 - ✅ Detection runbooks written in SOC SOP format for all 5 alerts
+- ✅ SOC Overview Dashboard built with 7 panels, dynamic filtering, drilldown, and 60-second auto-refresh
 
 ---
 
@@ -242,6 +243,31 @@ Built 5 production-quality MITRE ATT&CK mapped detection alerts in Splunk agains
 
 ---
 
+### Phase 9 — SOC Overview Dashboard
+**Duration:** Week 11 | **Status:** ✅ Complete
+
+Built a single-pane SOC Overview Dashboard in Splunk visualizing all 5 Phase 8 detection alerts with interactive filtering, drilldown, and auto-refresh — the capstone of the Home SOC Lab.
+
+**Dashboard Panels:**
+
+| Panel | Type | Maps To |
+|-------|------|---------|
+| Total Events (Selected Range) | Single Value | Overall activity |
+| Event Timeline by Sourcetype | Line Chart | All sourcetypes |
+| Brute Force Login Attempts | Table | T1110 |
+| New Admin Account Activity | Table | T1136.001 |
+| Suspicious Process Creation | Table | T1059 |
+| Lateral Movement (PsExec/SMB) | Table | T1021 |
+| Port Scan Detections | Table | T1046 |
+
+**Features:** Global time picker, dynamic computer dropdown, cell/row drilldown, automatic click tokens (`$click.value$`, `$row.ComputerName$`), 60-second auto-refresh, HTML token display panel
+
+📄 **[Full Phase 9 Documentation](phase9-dashboard/README.md)**
+
+**Tools:** Splunk Enterprise 9.3.2, Simple XML Classic Dashboards
+
+---
+
 ## 🛡️ Skills Demonstrated
 
 | Domain | Skills |
@@ -258,6 +284,7 @@ Built 5 production-quality MITRE ATT&CK mapped detection alerts in Splunk agains
 | Linux | Ubuntu Server administration, systemctl, bash scripting |
 | Windows | Active Directory, GPO, Windows Event Log analysis, PowerShell |
 | Detection Engineering | MITRE ATT&CK alert mapping, SPL threshold detection, real-time alerting, detection runbook writing (SOC SOP format) |
+| Dashboarding | Splunk Simple XML, dynamic dropdowns, drilldown configuration, token-based filtering, automatic click tokens, auto-refresh |
 
 ---
 
@@ -286,6 +313,12 @@ This project was built alongside:
 - **SPLK-1002 Splunk Core Certified User** (exam scheduled)
 - **Queens College CUNY** — B.S. Computer Science (Dec 2026)
 - **U.S. Army National Guard** — CBRN Specialist NCO (active)
+
+---
+
+## 🏁 Project Summary
+
+This lab represents 11 weeks of hands-on SOC work: building network infrastructure from scratch, deploying two SIEMs (Wazuh and Splunk), simulating real attacks and detecting them in real time, integrating cloud security monitoring, writing GRC documentation, and culminating in 5 MITRE ATT&CK mapped detection alerts with runbooks and a unified SOC dashboard. Every phase maps directly to entry-level SOC analyst and detection engineering job responsibilities.
 
 ---
 
