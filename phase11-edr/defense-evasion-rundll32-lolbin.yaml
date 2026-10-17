@@ -1,0 +1,36 @@
+# T1218.011 - System Binary Proxy Execution: Rundll32
+# Tactic: Defense Evasion
+# Author: Lance Vidaure
+# Authored to close a coverage gap found in testing. Correct logic, but the
+# remote-JS-payload variant did not emit a matchable NEW_PROCESS event on the
+# default sensor config (documented telemetry gap).
+detect:
+  event: NEW_PROCESS
+  op: and
+  rules:
+    - op: is windows
+    - op: ends with
+      path: event/FILE_PATH
+      value: rundll32.exe
+      case sensitive: false
+    - op: or
+      rules:
+        - op: contains
+          path: event/COMMAND_LINE
+          value: javascript
+          case sensitive: false
+        - op: contains
+          path: event/COMMAND_LINE
+          value: GetObject
+          case sensitive: false
+        - op: contains
+          path: event/COMMAND_LINE
+          value: RunHTMLApplication
+          case sensitive: false
+respond:
+  - action: report
+    name: Rundll32 LOLBin Execution (T1218.011)
+    metadata:
+      tactic: Defense Evasion
+      technique: T1218.011
+      author: Lance Vidaure
